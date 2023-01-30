@@ -1,25 +1,28 @@
-
+import sysconfig
 from telebot import types
 import types
 import telebot
+import configparser
+
 token = '5985528739:AAHfUz2bebAyHf5nlAScQDWCPoBiYw39gII'
 bot = telebot.TeleBot("5985528739:AAHfUz2bebAyHf5nlAScQDWCPoBiYw39gII")
 @bot.message_handler(content_types=["Поехали"])
-def get_text_messages(message):
+def start(message):
     if message.text == "Поехали":
         bot.send_message(message.from_user.id, "Привет, это бот который может решить твое уровнение.Напиши да если ты готов")
         if message.text == "да":
             bot.send_message(message.from_user.id, "Тогда погнали")
-            keyboard = types.InlineKeyboardMarkup()
-            key_ypovnenie = types.InlineKeyboardButton(text="Уровнение", callback_data="yrovnenie" )
-            key_drobi = types.InlineKeyboardButton(text="Дроби интерпритатор", callback_data="drobi")
+            keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            key_ypovnenie = types.KeyboardButton("Уровнение" )
+            key_drobi = types.KeyboardButton("Дроби интерпритатор")
+            keyboard.add(key_drobi, key_ypovnenie)
 
 
     elif message.text == "/help":
         bot.send_message(message.from_user.id, "Напиши 'уровнение',и я тебе обьясню. ")
     else:
         bot.send_message(message.from_user.id,"Я тебя не понимаю напиши   /help")
-@bot.callback_query_handlers(func=lambda call: True)
+@bot.callback_query_handlers(function=lambda call: True)
 def callback_worker(call):
 
     if call.data == "yrovnenie":
